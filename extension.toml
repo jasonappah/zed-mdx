@@ -6,10 +6,9 @@ authors = ["Jason Antwi-Appah <hey@jasonaa.me>"]
 description = "MDX language support"
 repository = "https://github.com/jasonappah/zed-mdx"
 
-# TODO: tree sitter grammar for mdx
-# [grammars.gleam]
-# repository = "https://github.com/gleam-lang/tree-sitter-gleam"
-# commit = "58b7cac8fc14c92b0677c542610d8738c373fa81"
+[grammars.mdx]
+repository = "https://github.com/jlopezcur/tree-sitter-mdx"
+commit = "df43681bff333228fa60b69c09a1e7a6f9ed1610"
 
 [language_servers.mdx-language-server]
 name = "MDX Language Server"

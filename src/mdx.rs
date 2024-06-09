@@ -1,4 +1,4 @@
-use zed_extension_api::{self as zed, Result};
+use zed_extension_api::{self as zed, serde_json, Result};
 use std::{env, fs};
 
 const SERVER_PATH: &str = "node_modules/@mdx-js/language-server/index.js";
@@ -13,14 +13,14 @@ impl MDXExtension {
         fs::metadata(SERVER_PATH).map_or(false, |stat| stat.is_file())
     }
 
-    fn server_script_path(&mut self, config: zed::LanguageServerConfig) -> Result<String> {
+    fn server_script_path(&mut self, id: &zed::LanguageServerId) -> Result<String> {
         let server_exists = self.server_exists();
         if self.did_find_server && server_exists {
             return Ok(SERVER_PATH.to_string());
         }
 
         zed::set_language_server_installation_status(
-            &config.name,
+            id,
             &zed::LanguageServerInstallationStatus::CheckingForUpdate,
         );
         let version = zed::npm_package_latest_version(PACKAGE_NAME)?;
@@ -29,7 +29,7 @@ impl MDXExtension {
             || zed::npm_package_installed_version(PACKAGE_NAME)?.as_ref() != Some(&version)
         {
             zed::set_language_server_installation_status(
-                &config.name,
+                id,
                 &zed::LanguageServerInstallationStatus::Downloading,
             );
             let result = zed::npm_install_package(PACKAGE_NAME, &version);
@@ -63,10 +63,10 @@ impl zed::Extension for MDXExtension {
 
     fn language_server_command(
         &mut self,
-        config: zed::LanguageServerConfig,
+        id: &zed::LanguageServerId,
         _worktree: &zed::Worktree,
     ) -> Result<zed::Command> {
-        let server_path = self.server_script_path(config)?;
+        let server_path = self.server_script_path(id)?;
         Ok(zed::Command {
             command: zed::node_binary_path()?,
             args: vec![
@@ -83,16 +83,14 @@ impl zed::Extension for MDXExtension {
 
     fn language_server_initialization_options(
         &mut self,
-        _config: zed::LanguageServerConfig,
+        _id: &zed::LanguageServerId,
         _worktree: &zed::Worktree,
-    ) -> Result<Option<String>> {
-        let initialization_options = r#"{
+    ) -> Result<Option<serde_json::Value>> {
+        Ok(Some(serde_json::json!({
             "typescript": {
                 "tsdk": "node_modules/typescript/lib"
             }
-        }"#;
-
-        Ok(Some(initialization_options.to_string()))
+        })))
     }
 }
 
