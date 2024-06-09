@@ -1,0 +1,15 @@
+[package]
+name = "zed-mdx"
+edition = "2021"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+zed_extension_api = "0.0.6"
+
+[language_servers.mdx]
+name = "MDX LSP"
+language = "MDX"
+

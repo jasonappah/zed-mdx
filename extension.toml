@@ -1,0 +1,12 @@
+id = "mdx"
+name = "MDX"
+version = "0.0.1"
+schema_version = 1
+authors = ["Jason Antwi-Appah <hey@jasonaa.me>"]
+description = "MDX language support"
+repository = "https://github.com/jasonappah/zed-mdx"
+
+# TODO: tree sitter grammar for mdx
+# [grammars.gleam]
+# repository = "https://github.com/gleam-lang/tree-sitter-gleam"
+# commit = "58b7cac8fc14c92b0677c542610d8738c373fa81"
