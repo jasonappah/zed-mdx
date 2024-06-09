@@ -10,3 +10,7 @@ repository = "https://github.com/jasonappah/zed-mdx"
 # [grammars.gleam]
 # repository = "https://github.com/gleam-lang/tree-sitter-gleam"
 # commit = "58b7cac8fc14c92b0677c542610d8738c373fa81"
+
+[language_servers.mdx-language-server]
+name = "MDX Language Server"
+language = "MDX"
